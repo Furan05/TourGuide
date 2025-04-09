@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Guide Voyage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <!-- Polices Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  </head>
+
+  <body class="bg-gray-50 font-sans">
+    <!-- Barre de navigation -->
+    <nav class="bg-white shadow-sm">
+      <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="ml-2 text-xl font-bold text-gray-800">Guide Voyage</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <%= link_to "Destinations", destinations_path, class: "text-gray-600 hover:text-blue-600" %>
+          <%= link_to "Itinéraires", itineraries_path, class: "text-gray-600 hover:text-blue-600" %>
+          <% if user_signed_in? %>
+            <%= link_to "Mon Compte", edit_user_registration_path, class: "text-gray-600 hover:text-blue-600" %>
+            <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-600 hover:text-white transition" %>
+          <% else %>
+            <%= link_to "Connexion", new_user_session_path, class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <%= yield %>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span class="ml-2 text-lg font-bold">Guide Voyage</span>
+            </div>
+            <p class="text-gray-400">
+              Votre compagnon de voyage pour découvrir le monde de manière authentique.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold mb-4">Explorer</h3>
+            <ul class="space-y-2">
+              <li><%= link_to "Destinations", destinations_path, class: "text-gray-400 hover:text-white transition" %></li>
+              <li><%= link_to "Itinéraires", itineraries_path, class: "text-gray-400 hover:text-white transition" %></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Activités</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Blog voyage</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold mb-4">Compte</h3>
+            <ul class="space-y-2">
+              <% if user_signed_in? %>
+                <li><%= link_to "Mon profil", edit_user_registration_path, class: "text-gray-400 hover:text-white transition" %></li>
+                <li><%= link_to "Mes voyages", itineraries_path, class: "text-gray-400 hover:text-white transition" %></li>
+                <li><%= link_to "Déconnexion", destroy_user_session_path, method: :delete, class: "text-gray-400 hover:text-white transition" %></li>
+              <% else %>
+                <li><%= link_to "S'inscrire", new_user_registration_path, class: "text-gray-400 hover:text-white transition" %></li>
+                <li><%= link_to "Se connecter", new_user_session_path, class: "text-gray-400 hover:text-white transition" %></li>
+              <% end %>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold mb-4">Contact</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="text-gray-400 hover:text-white transition">À propos</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Nous contacter</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">FAQ</a></li>
+              <li><a href="#" class="text-gray-400 hover:text-white transition">Centre d'aide</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
+          <p>© <%= Time.current.year %> Guide Voyage. Tous droits réservés.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

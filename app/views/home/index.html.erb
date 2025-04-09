@@ -1,0 +1,235 @@
+<!-- Hero section avec recherche -->
+<section class="relative h-96 flex items-center">
+  <div class="absolute inset-0 bg-gradient-to-r from-blue-900 to-blue-700 opacity-90"></div>
+  <img
+    src="https://source.unsplash.com/random/1920x1080/?travel,guide"
+    alt="Guide de voyage"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="max-w-2xl">
+      <h1 class="text-4xl font-bold text-white mb-4">
+        Découvrez le monde avec des guides locaux
+      </h1>
+      <p class="text-xl text-white opacity-90 mb-6">
+        Explorez des lieux authentiques et vivez des expériences uniques grâce à nos guides locaux passionnés
+      </p>
+
+      <!-- Barre de recherche -->
+      <%= form_with url: destinations_path, method: :get, class: "bg-white p-4 rounded-lg shadow-lg", local: true do |f| %>
+        <div class="flex items-center">
+          <div class="flex-1">
+            <div class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <%= f.text_field :query, placeholder: "Où souhaitez-vous explorer ?", class: "w-full p-2 focus:outline-none" %>
+            </div>
+          </div>
+          <button type="submit" class="px-6 py-3 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            Trouver un guide
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Section destinations populaires -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-bold text-gray-800">Destinations populaires</h2>
+      <%= link_to destinations_path, class: "flex items-center text-blue-600 hover:text-blue-800 transition" do %>
+        Voir toutes les destinations
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      <% end %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @popular_destinations.each_with_index do |destination, index| %>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition transform hover:scale-105 <%= index == 0 ? 'md:col-span-2' : '' %>">
+          <div class="relative">
+            <% if destination.image.present? %>
+              <%= image_tag destination.image, class: "w-full h-64 object-cover", alt: destination.name %>
+            <% else %>
+              <div class="w-full h-64 bg-gray-300 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                  <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+              </div>
+            <% end %>
+            <div class="absolute top-3 right-3 bg-white px-2 py-1 rounded-md flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400 fill-current" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span class="ml-1 text-sm font-medium">4.8</span>
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-bold text-gray-800 mb-1"><%= destination.name %></h3>
+            <p class="text-gray-600 mb-3"><%= destination.country %><%= ", #{destination.city}" if destination.city.present? %></p>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-500"><%= rand(5..20) %> guides disponibles</span>
+              <%= link_to "Voir les guides", destination_path(destination), class: "px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-600 hover:text-white transition" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Section types d'expériences -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Explorez des expériences uniques</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="bg-blue-50 rounded-lg p-6 text-center hover:shadow-md transition">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Visites culturelles</h3>
+        <p class="text-gray-600 mb-4">
+          Explorez les sites historiques et les trésors culturels avec des experts locaux
+        </p>
+        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Découvrir</a>
+      </div>
+
+      <div class="bg-green-50 rounded-lg p-6 text-center hover:shadow-md transition">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Aventures nature</h3>
+        <p class="text-gray-600 mb-4">
+          Randonnées, treks et découverte de paysages spectaculaires
+        </p>
+        <a href="#" class="text-green-600 hover:text-green-800 font-medium">Découvrir</a>
+      </div>
+
+      <div class="bg-orange-50 rounded-lg p-6 text-center hover:shadow-md transition">
+        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Gastronomie locale</h3>
+        <p class="text-gray-600 mb-4">
+          Dégustations, cours de cuisine et découverte des marchés traditionnels
+        </p>
+        <a href="#" class="text-orange-500 hover:text-orange-700 font-medium">Découvrir</a>
+      </div>
+
+      <div class="bg-purple-50 rounded-lg p-6 text-center hover:shadow-md transition">
+        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Vie nocturne</h3>
+        <p class="text-gray-600 mb-4">
+          Explorez les meilleurs bars, clubs et lieux de divertissement locaux
+        </p>
+        <a href="#" class="text-purple-600 hover:text-purple-800 font-medium">Découvrir</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section témoignages -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Ce que disent nos voyageurs</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl">S</div>
+          <div class="ml-4">
+            <h3 class="font-bold text-gray-800">Sophie L.</h3>
+            <div class="flex text-yellow-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 italic">"Notre guide Marco à Rome nous a fait découvrir des quartiers dont même mes amis italiens ne connaissaient pas l'existence ! Une expérience authentique qui a rendu notre voyage inoubliable."</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-xl">T</div>
+          <div class="ml-4">
+            <h3 class="font-bold text-gray-800">Thomas R.</h3>
+            <div class="flex text-yellow-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 italic">"Grâce à Mei, notre guide à Tokyo, nous avons pu découvrir la ville comme de vrais locaux. Elle nous a emmenés dans des izakayas traditionnels où nous étions les seuls touristes !"</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xl">E</div>
+          <div class="ml-4">
+            <h3 class="font-bold text-gray-800">Emma P.</h3>
+            <div class="flex text-yellow-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 fill-current" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+          </div>
+        </div>
+        <p class="text-gray-600 italic">"Notre randonnée à Bali avec Ketut a été le point fort de notre voyage. Il connaît des sentiers secrets qui mènent à des cascades où personne d'autre ne va. Une expérience incroyable !"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bannière d'appel à l'action -->
+<section class="py-12 bg-blue-600">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-white mb-4">Devenir guide ou explorer le monde ?</h2>
+    <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+      Rejoignez notre communauté de voyageurs passionnés et de guides locaux experts
+    </p>
+    <div class="flex justify-center space-x-4">
+      <% if user_signed_in? %>
+        <%= link_to "Trouver un guide", destinations_path, class: "px-8 py-4 bg-white text-blue-600 rounded-md hover:bg-blue-50 transition font-bold" %>
+        <%= link_to "Devenir guide", "#", class: "px-8 py-4 border-2 border-white text-white rounded-md hover:bg-white hover:bg-opacity-10 transition font-bold" %>
+      <% else %>
+        <%= link_to "S'inscrire gratuitement", new_user_registration_path, class: "px-8 py-4 bg-white text-blue-600 rounded-md hover:bg-blue-50 transition font-bold" %>
+      <% end %>
+    </div>
+  </div>
+</section>
